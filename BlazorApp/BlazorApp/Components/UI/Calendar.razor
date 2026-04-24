@@ -1,0 +1,111 @@
+@* Calendar *@
+@using System.Globalization
+
+<div class="p-3 @Class">
+    <div class="flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0">
+        <div class="space-y-4">
+            @* Caption / navigation *@
+            <div class="flex justify-center pt-1 relative items-center">
+                <button type="button" @onclick="PrevMonth"
+                        class="absolute left-1 h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 inline-flex items-center justify-center rounded-md border border-input">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24"
+                         fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="15 18 9 12 15 6"/>
+                    </svg>
+                </button>
+                <span class="text-sm font-medium">@CurrentMonth.ToString("MMMM yyyy", CultureInfo.CurrentCulture)</span>
+                <button type="button" @onclick="NextMonth"
+                        class="absolute right-1 h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 inline-flex items-center justify-center rounded-md border border-input">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24"
+                         fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="9 18 15 12 9 6"/>
+                    </svg>
+                </button>
+            </div>
+
+            @* Day headers *@
+            <table class="w-full border-collapse space-y-1">
+                <thead>
+                    <tr class="flex">
+                        @foreach (var day in DayNames)
+                        {
+                            <th class="text-muted-foreground rounded-md w-9 font-normal text-[0.8rem]">@day</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var week in Weeks)
+                    {
+                        <tr class="flex w-full mt-2">
+                            @foreach (var date in week)
+                            {
+                                <td class="h-9 w-9 text-center text-sm p-0 relative">
+                                    @if (date.HasValue)
+                                    {
+                                        var d = date.Value;
+                                        var isSelected = SelectedDate?.Date == d.Date;
+                                        var isToday = d.Date == DateTime.Today;
+                                        var isOutside = d.Month != CurrentMonth.Month;
+                                        <button type="button"
+                                                @onclick="() => SelectDate(d)"
+                                                class="h-9 w-9 p-0 font-normal inline-flex items-center justify-center rounded-md
+                                                       @(isSelected ? "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground" :
+                                                         isToday   ? "bg-accent text-accent-foreground" :
+                                                         isOutside  ? "text-muted-foreground opacity-50" :
+                                                                      "hover:bg-accent hover:text-accent-foreground")">
+                                            @d.Day
+                                        </button>
+                                    }
+                                </td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public DateTime? SelectedDate { get; set; }
+    [Parameter] public EventCallback<DateTime?> SelectedDateChanged { get; set; }
+    [Parameter] public bool ShowOutsideDays { get; set; } = true;
+
+    private DateTime CurrentMonth = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+
+    private static readonly string[] DayNames = { "Su", "Mo", "Tu", "We", "Th", "Fr", "Sa" };
+
+    private List<List<DateTime?>> Weeks
+    {
+        get
+        {
+            var weeks = new List<List<DateTime?>>();
+            var firstDay = new DateTime(CurrentMonth.Year, CurrentMonth.Month, 1);
+            var startOfCalendar = firstDay.AddDays(-(int)firstDay.DayOfWeek);
+            var day = startOfCalendar;
+
+            for (int w = 0; w < 6; w++)
+            {
+                var week = new List<DateTime?>();
+                for (int d = 0; d < 7; d++)
+                {
+                    week.Add(ShowOutsideDays || day.Month == CurrentMonth.Month ? day : (DateTime?)null);
+                    day = day.AddDays(1);
+                }
+                weeks.Add(week);
+                if (day.Month > CurrentMonth.Month && day.Year >= CurrentMonth.Year) break;
+            }
+            return weeks;
+        }
+    }
+
+    private void PrevMonth() => CurrentMonth = CurrentMonth.AddMonths(-1);
+    private void NextMonth() => CurrentMonth = CurrentMonth.AddMonths(1);
+
+    private async Task SelectDate(DateTime date)
+    {
+        SelectedDate = date;
+        await SelectedDateChanged.InvokeAsync(date);
+    }
+}

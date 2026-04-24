@@ -1,0 +1,22 @@
+@* MenubarTrigger.razor *@
+<button type="button"
+        role="menuitem"
+        class="@CssClass"
+        @onclick="() => Menu?.Toggle()"
+        @attributes="AdditionalAttributes">
+    @ChildContent
+</button>
+
+@code {
+    [CascadingParameter] public MenubarMenu? Menu { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string CssClass => string.Join(" ",
+        "flex cursor-default select-none items-center rounded-sm px-3 py-1.5 text-sm font-medium outline-none",
+        "focus:bg-accent focus:text-accent-foreground",
+        Menu?._open == true ? "bg-accent text-accent-foreground" : "",
+        Class ?? ""
+    ).Trim();
+}

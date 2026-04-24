@@ -1,0 +1,6 @@
+@* DropdownMenuShortcut *@
+<span class="ml-auto text-xs tracking-widest opacity-60 @Class">@ChildContent</span>
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string? Class { get; set; }
+}

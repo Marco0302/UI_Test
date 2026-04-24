@@ -1,0 +1,16 @@
+@* AccordionItem *@
+<div class="border-b @Class">
+    <CascadingValue Value="this">
+        @ChildContent
+    </CascadingValue>
+</div>
+
+@code {
+    [CascadingParameter] public Accordion? Root { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter, EditorRequired] public string Value { get; set; } = string.Empty;
+
+    public bool IsOpen => Root?.IsOpen(Value) ?? false;
+    public async Task Toggle() => await (Root?.Toggle(Value) ?? Task.CompletedTask);
+}

@@ -1,0 +1,9 @@
+@* AlertDescription *@
+<div class="text-sm [&_p]:leading-relaxed @Class">
+    @ChildContent
+</div>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string? Class { get; set; }
+}

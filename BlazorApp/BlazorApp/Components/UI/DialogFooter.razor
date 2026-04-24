@@ -1,0 +1,6 @@
+@* DialogFooter *@
+<div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 @Class">@ChildContent</div>
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string? Class { get; set; }
+}

@@ -1,0 +1,12 @@
+@* ResizablePanel.razor *@
+<div class="@CssClass min-w-0 min-h-0 @Class" style="flex: @DefaultSize 1 0%" @attributes="AdditionalAttributes">
+    @ChildContent
+</div>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public double DefaultSize { get; set; } = 1;
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+    private string CssClass => "overflow-auto";
+}

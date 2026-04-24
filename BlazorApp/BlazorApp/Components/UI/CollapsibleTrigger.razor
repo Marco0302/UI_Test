@@ -1,0 +1,9 @@
+@* CollapsibleTrigger *@
+<span @onclick="() => Root?.Toggle()">
+    @ChildContent
+</span>
+
+@code {
+    [CascadingParameter] public Collapsible? Root { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

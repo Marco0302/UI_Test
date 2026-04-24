@@ -1,0 +1,14 @@
+@* CommandDialog *@
+<Dialog @bind-Open="Open">
+    <DialogContent Class="overflow-hidden p-0 shadow-lg">
+        <Command Class="[&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground">
+            @ChildContent
+        </Command>
+    </DialogContent>
+</Dialog>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public bool Open { get; set; }
+    [Parameter] public EventCallback<bool> OpenChanged { get; set; }
+}

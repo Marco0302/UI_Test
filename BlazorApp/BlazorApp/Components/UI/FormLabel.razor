@@ -1,0 +1,19 @@
+@* FormLabel *@
+<label for="@Item?.Id"
+       class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70
+              @(HasError ? "text-destructive" : "")
+              @Class">
+    @ChildContent
+</label>
+
+@code {
+    [CascadingParameter] public FormItem? Item { get; set; }
+    [CascadingParameter] public EditContext? EditContext { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public string? FieldName { get; set; }
+
+    private bool HasError =>
+        FieldName != null && EditContext != null &&
+        EditContext.GetValidationMessages(new FieldIdentifier(EditContext.Model, FieldName)).Any();
+}

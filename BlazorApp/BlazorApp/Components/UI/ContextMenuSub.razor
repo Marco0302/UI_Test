@@ -1,0 +1,15 @@
+@* ContextMenuSub *@
+<div class="relative @Class">
+    <CascadingValue Value="this">
+        @ChildContent
+    </CascadingValue>
+</div>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string? Class { get; set; }
+    public bool IsOpen { get; private set; }
+    public void Open() { IsOpen = true; StateHasChanged(); }
+    public void Close() { IsOpen = false; StateHasChanged(); }
+    public void Toggle() { IsOpen = !IsOpen; StateHasChanged(); }
+}

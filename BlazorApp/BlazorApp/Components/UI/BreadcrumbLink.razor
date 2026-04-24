@@ -1,0 +1,10 @@
+@* BreadcrumbLink *@
+<a href="@Href" class="transition-colors hover:text-foreground @Class">
+    @ChildContent
+</a>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public string? Href { get; set; }
+}

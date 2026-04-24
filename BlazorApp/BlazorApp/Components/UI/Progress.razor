@@ -1,0 +1,24 @@
+@* Progress.razor — equivalente ao progress.tsx (shadcn/ui) *@
+
+<div role="progressbar"
+     aria-valuemin="0"
+     aria-valuemax="100"
+     aria-valuenow="@Value"
+     class="@CssClass"
+     @attributes="AdditionalAttributes">
+    <div class="h-full w-full flex-1 bg-primary transition-all"
+         style="transform: translateX(-@(100 - (Value ?? 0))%)">
+    </div>
+</div>
+
+@code {
+    [Parameter] public int? Value { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string CssClass => string.Join(" ",
+        "relative h-4 w-full overflow-hidden rounded-full bg-secondary",
+        Class ?? ""
+    ).Trim();
+}

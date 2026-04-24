@@ -1,0 +1,33 @@
+@* ResizableHandle.razor *@
+@* Nota: O handle interativo de arrastar requer JS Interop com pointermove/pointerup.
+         Esta versão renderiza o visual correto. Para funcionalidade de drag completa,
+         adiciona um JS Interop ou usa uma biblioteca como BlazorSplitter. *@
+
+<div class="@CssClass" @attributes="AdditionalAttributes">
+    @if (WithHandle)
+    {
+        <div class="z-10 flex h-4 w-3 items-center justify-center rounded-sm border bg-border">
+            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="9" cy="12" r="1" /><circle cx="15" cy="12" r="1" />
+                <circle cx="9" cy="5" r="1" /><circle cx="15" cy="5" r="1" />
+                <circle cx="9" cy="19" r="1" /><circle cx="15" cy="19" r="1" />
+            </svg>
+        </div>
+    }
+</div>
+
+@code {
+    [CascadingParameter] public string? Direction { get; set; }
+    [Parameter] public bool WithHandle { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string CssClass => string.Join(" ",
+        Direction == "vertical"
+            ? "relative flex h-px w-full cursor-row-resize items-center justify-center bg-border"
+            : "relative flex w-px cursor-col-resize items-center justify-center bg-border",
+        "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1",
+        Class ?? ""
+    ).Trim();
+}

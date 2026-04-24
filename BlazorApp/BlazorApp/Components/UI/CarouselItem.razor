@@ -1,0 +1,24 @@
+@* CarouselItem *@
+@implements IDisposable
+
+<div role="group"
+     aria-roledescription="slide"
+     class="min-w-0 shrink-0 grow-0 basis-full @(Root?.Orientation == Carousel.CarouselOrientation.Horizontal ? "pl-4" : "pt-4") @Class">
+    @ChildContent
+</div>
+
+@code {
+    [CascadingParameter] public Carousel? Root { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string? Class { get; set; }
+
+    protected override void OnInitialized()
+    {
+        if (Root != null) Root.TotalItems++;
+    }
+
+    public void Dispose()
+    {
+        if (Root != null) Root.TotalItems--;
+    }
+}

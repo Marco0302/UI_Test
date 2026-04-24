@@ -1,0 +1,27 @@
+@* SidebarInput.razor *@
+<input type="text"
+       data-sidebar="input"
+       class="@CssClass"
+       value="@Value"
+       placeholder="@Placeholder"
+       @oninput="OnInput"
+       @attributes="AdditionalAttributes" />
+
+@code {
+    [Parameter] public string? Value { get; set; }
+    [Parameter] public EventCallback<string?> ValueChanged { get; set; }
+    [Parameter] public string? Placeholder { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string CssClass => string.Join(" ",
+        "flex h-8 w-full rounded-md bg-background px-2 py-1 text-sm shadow-none",
+        "ring-offset-background placeholder:text-muted-foreground",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring",
+        "border-none",
+        Class ?? ""
+    ).Trim();
+
+    private async Task OnInput(ChangeEventArgs e)
+        => await ValueChanged.InvokeAsync(e.Value?.ToString());
+}

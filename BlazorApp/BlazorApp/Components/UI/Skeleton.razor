@@ -1,0 +1,14 @@
+@* Skeleton.razor — equivalente ao skeleton.tsx (shadcn/ui) *@
+
+<div class="@CssClass" @attributes="AdditionalAttributes"></div>
+
+@code {
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string CssClass => string.Join(" ",
+        "animate-pulse rounded-md bg-muted",
+        Class ?? ""
+    ).Trim();
+}

@@ -1,0 +1,50 @@
+@* Carousel *@
+<div class="relative @Class"
+     role="region"
+     aria-roledescription="carousel"
+     @onkeydown="HandleKeyDown"
+     tabindex="0"
+     @attributes="AdditionalAttributes">
+    <CascadingValue Value="this">
+        @ChildContent
+    </CascadingValue>
+</div>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public CarouselOrientation Orientation { get; set; } = CarouselOrientation.Horizontal;
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    public int CurrentIndex { get; private set; } = 0;
+    public int TotalItems { get; set; } = 0;
+
+    public bool CanScrollPrev => CurrentIndex > 0;
+    public bool CanScrollNext => CurrentIndex < TotalItems - 1;
+
+    public void ScrollPrev()
+    {
+        if (CanScrollPrev) { CurrentIndex--; StateHasChanged(); }
+    }
+
+    public void ScrollNext()
+    {
+        if (CanScrollNext) { CurrentIndex++; StateHasChanged(); }
+    }
+
+    private void HandleKeyDown(KeyboardEventArgs e)
+    {
+        if (Orientation == CarouselOrientation.Horizontal)
+        {
+            if (e.Key == "ArrowLeft") ScrollPrev();
+            else if (e.Key == "ArrowRight") ScrollNext();
+        }
+        else
+        {
+            if (e.Key == "ArrowUp") ScrollPrev();
+            else if (e.Key == "ArrowDown") ScrollNext();
+        }
+    }
+
+    public enum CarouselOrientation { Horizontal, Vertical }
+}

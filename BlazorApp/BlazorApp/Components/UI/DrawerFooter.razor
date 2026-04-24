@@ -1,0 +1,6 @@
+@* DrawerFooter *@
+<div class="mt-auto flex flex-col gap-2 p-4 @Class">@ChildContent</div>
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string? Class { get; set; }
+}

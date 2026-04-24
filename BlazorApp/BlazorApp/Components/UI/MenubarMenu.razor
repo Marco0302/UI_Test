@@ -1,0 +1,28 @@
+@* MenubarMenu.razor *@
+<div class="relative" @onmouseleave="() => _open = false">
+    <CascadingValue Value="this">
+        @ChildContent
+    </CascadingValue>
+</div>
+
+@code {
+    [CascadingParameter] public Menubar? Bar { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    private readonly string _id = Guid.NewGuid().ToString("N");
+    internal bool _open;
+
+    internal void Toggle()
+    {
+        _open = !_open;
+        if (_open) Bar?.OpenMenu(_id);
+        else Bar?.CloseAll();
+        StateHasChanged();
+    }
+
+    internal void Close()
+    {
+        _open = false;
+        StateHasChanged();
+    }
+}

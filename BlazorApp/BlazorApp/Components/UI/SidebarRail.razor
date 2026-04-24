@@ -1,0 +1,30 @@
+@* SidebarRail.razor *@
+<button type="button"
+        aria-label="Toggle Sidebar"
+        tabindex="-1"
+        data-sidebar="rail"
+        class="@CssClass"
+        @onclick="Toggle"
+        @attributes="AdditionalAttributes">
+</button>
+
+@code {
+    [CascadingParameter] public SidebarContext? Context { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string CssClass => string.Join(" ",
+        "absolute inset-y-0 z-20 hidden w-4 -translate-x-1/2 transition-all ease-linear",
+        "after:absolute after:inset-y-0 after:left-1/2 after:w-[2px]",
+        "hover:after:bg-sidebar-border",
+        "group-data-[side=left]:-right-4 group-data-[side=right]:left-0",
+        "sm:flex",
+        Class ?? ""
+    ).Trim();
+
+    private async Task Toggle()
+    {
+        if (Context is not null)
+            await Context.ToggleSidebar();
+    }
+}

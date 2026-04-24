@@ -1,0 +1,13 @@
+@* AvatarFallback *@
+@if (AvatarRoot?.ImageLoaded != true)
+{
+    <span class="flex h-full w-full items-center justify-center rounded-full bg-muted @Class">
+        @ChildContent
+    </span>
+}
+
+@code {
+    [CascadingParameter] public Avatar? AvatarRoot { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string? Class { get; set; }
+}

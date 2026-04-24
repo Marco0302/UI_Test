@@ -1,0 +1,41 @@
+@* NavigationMenu.razor — equivalente ao navigation-menu.tsx (shadcn/ui) *@
+
+<nav class="@CssClass" @attributes="AdditionalAttributes">
+    <CascadingValue Value="this">
+        @ChildContent
+    </CascadingValue>
+    @* Viewport para conteúdo expandido *@
+    @if (_activeItem is not null)
+    {
+        <div class="absolute left-0 top-full flex justify-center">
+            <div class="origin-top-center relative mt-1.5 overflow-hidden rounded-md border bg-popover text-popover-foreground shadow-lg animate-in zoom-in-90 w-auto">
+                @_activeItem
+            </div>
+        </div>
+    }
+</nav>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private RenderFragment? _activeItem;
+
+    private string CssClass => string.Join(" ",
+        "relative z-10 flex max-w-max flex-1 items-center justify-center",
+        Class ?? ""
+    ).Trim();
+
+    internal void ShowContent(RenderFragment? content)
+    {
+        _activeItem = content;
+        StateHasChanged();
+    }
+
+    internal void HideContent()
+    {
+        _activeItem = null;
+        StateHasChanged();
+    }
+}

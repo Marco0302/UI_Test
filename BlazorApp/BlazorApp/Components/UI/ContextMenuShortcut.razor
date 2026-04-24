@@ -1,0 +1,7 @@
+@* ContextMenuShortcut *@
+<span class="ml-auto text-xs tracking-widest text-muted-foreground @Class">@ChildContent</span>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string? Class { get; set; }
+}

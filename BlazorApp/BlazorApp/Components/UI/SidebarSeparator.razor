@@ -1,0 +1,13 @@
+@* SidebarSeparator.razor *@
+<div data-sidebar="separator"
+     class="@CssClass"
+     @attributes="AdditionalAttributes">
+</div>
+@code {
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+    private string CssClass => string.Join(" ",
+        "mx-2 w-auto bg-sidebar-border group-data-[collapsible=icon]:hidden h-px shrink-0",
+        Class ?? ""
+    ).Trim();
+}

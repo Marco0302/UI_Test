@@ -1,0 +1,18 @@
+@* DrawerContent *@
+@if (Root?.Open == true)
+{
+    @* Overlay *@
+    <div class="fixed inset-0 z-50 bg-black/80" @onclick="() => Root?.Hide()"></div>
+
+    @* Drawer panel slides up from bottom *@
+    <div class="fixed inset-x-0 bottom-0 z-50 mt-24 flex h-auto flex-col rounded-t-[10px] border bg-background @Class">
+        <div class="mx-auto mt-4 h-2 w-[100px] rounded-full bg-muted"></div>
+        @ChildContent
+    </div>
+}
+
+@code {
+    [CascadingParameter] public Drawer? Root { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string? Class { get; set; }
+}

@@ -1,0 +1,7 @@
+@* DropdownMenuTrigger *@
+<span @onclick="() => Root?.Toggle()">@ChildContent</span>
+
+@code {
+    [CascadingParameter] public DropdownMenu? Root { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

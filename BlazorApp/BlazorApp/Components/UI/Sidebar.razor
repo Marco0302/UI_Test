@@ -1,0 +1,65 @@
+@* Sidebar.razor *@
+
+<div class="@OuterClass"
+     data-state="@Context?.State"
+     data-collapsible="@(Context?.State == "collapsed" ? Collapsible : "")"
+     data-variant="@Variant"
+     data-side="@Side">
+    @* Gap placeholder *@
+    <div class="@GapClass"></div>
+    @* Painel fixo *@
+    <div class="@PanelClass" @attributes="AdditionalAttributes">
+        <div data-sidebar="sidebar"
+             class="flex h-full w-full flex-col bg-sidebar">
+            @ChildContent
+        </div>
+    </div>
+</div>
+
+@code {
+    [CascadingParameter] public SidebarContext? Context { get; set; }
+    [Parameter] public string Side { get; set; } = "left";
+    [Parameter] public string Variant { get; set; } = "sidebar";
+    [Parameter] public string Collapsible { get; set; } = "offcanvas";
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string State => Context?.State ?? "expanded";
+
+    private string OuterClass => string.Join(" ",
+        "group peer hidden text-sidebar-foreground md:block",
+        Class ?? ""
+    ).Trim();
+
+    private string GapClass
+    {
+        get
+        {
+            var w = State == "collapsed" && Collapsible == "offcanvas" ? "w-0" :
+                    State == "collapsed" && Collapsible == "icon"      ? "w-[--sidebar-width-icon]" :
+                                                                         "w-[--sidebar-width]";
+            return $"relative h-svh {w} bg-transparent transition-[width] duration-200 ease-linear";
+        }
+    }
+
+    private string PanelClass
+    {
+        get
+        {
+            var sidePos = Side == "left"
+                ? (State == "collapsed" && Collapsible == "offcanvas"
+                    ? "left-[calc(var(--sidebar-width)*-1)]"
+                    : "left-0")
+                : (State == "collapsed" && Collapsible == "offcanvas"
+                    ? "right-[calc(var(--sidebar-width)*-1)]"
+                    : "right-0");
+
+            return string.Join(" ",
+                "fixed inset-y-0 z-10 hidden h-svh w-[--sidebar-width] transition-[left,right,width] duration-200 ease-linear md:flex",
+                sidePos
+            );
+        }
+    }
+}

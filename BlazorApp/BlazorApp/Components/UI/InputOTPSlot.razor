@@ -1,0 +1,30 @@
+@* InputOTPSlot.razor *@
+<div class="@CssClass" @attributes="AdditionalAttributes">
+    @if (Char.HasValue)
+    {
+        <span>@Char</span>
+    }
+    @if (IsActive)
+    {
+        <div class="pointer-events-none absolute inset-0 flex items-center justify-center">
+            <div class="animate-caret-blink h-4 w-px bg-foreground duration-1000"></div>
+        </div>
+    }
+</div>
+
+@code {
+    [CascadingParameter] public InputOTP? OTP { get; set; }
+    [Parameter] public int Index { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private char? Char => OTP?.GetChar(Index);
+    private bool IsActive => OTP?.IsActive(Index) ?? false;
+
+    private string CssClass => string.Join(" ",
+        "relative flex h-10 w-10 items-center justify-center border-y border-r border-input text-sm transition-all",
+        "first:rounded-l-md first:border-l last:rounded-r-md",
+        IsActive ? "z-10 ring-2 ring-ring ring-offset-background" : "",
+        Class ?? ""
+    ).Trim();
+}

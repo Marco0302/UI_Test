@@ -1,0 +1,23 @@
+@* SidebarGroupAction.razor *@
+<button type="button"
+        data-sidebar="group-action"
+        class="@CssClass"
+        @attributes="AdditionalAttributes">
+    @ChildContent
+</button>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string CssClass => string.Join(" ",
+        "absolute right-3 top-3.5 flex aspect-square w-5 items-center justify-center rounded-md p-0",
+        "text-sidebar-foreground outline-none ring-sidebar-ring transition-transform",
+        "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+        "focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0",
+        "after:absolute after:-inset-2 after:md:hidden",
+        "group-data-[collapsible=icon]:hidden",
+        Class ?? ""
+    ).Trim();
+}

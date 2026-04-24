@@ -1,0 +1,10 @@
+@* AlertDialogTrigger *@
+<span @onclick="HandleClick">
+    @ChildContent
+</span>
+
+@code {
+    [CascadingParameter] public AlertDialog? Dialog { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    private async Task HandleClick() => await (Dialog?.Show() ?? Task.CompletedTask);
+}

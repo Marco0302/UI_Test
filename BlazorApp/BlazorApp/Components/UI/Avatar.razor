@@ -1,0 +1,13 @@
+@* Avatar *@
+<span class="relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full @Class">
+    <CascadingValue Value="this">
+        @ChildContent
+    </CascadingValue>
+</span>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string? Class { get; set; }
+    public bool ImageLoaded { get; set; } = false;
+    public void NotifyImageLoaded() { ImageLoaded = true; StateHasChanged(); }
+}

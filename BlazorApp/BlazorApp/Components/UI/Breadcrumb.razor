@@ -1,0 +1,9 @@
+@* Breadcrumb *@
+<nav aria-label="breadcrumb" class="@Class">
+    @ChildContent
+</nav>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string? Class { get; set; }
+}

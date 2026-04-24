@@ -1,0 +1,37 @@
+@* NavigationMenuTrigger.razor *@
+<button type="button"
+        class="@CssClass"
+        @onmouseenter="OnHover"
+        @attributes="AdditionalAttributes">
+    @ChildContent
+    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
+         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+         class="relative top-[1px] ml-1 transition duration-200 @(_open ? "rotate-180" : "")"
+         aria-hidden="true">
+        <path d="m6 9 6 6 6-6" />
+    </svg>
+</button>
+
+@code {
+    [CascadingParameter] public NavigationMenuItem? Item { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public RenderFragment? ContentFragment { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private bool _open;
+
+    private string CssClass => string.Join(" ",
+        "group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium",
+        "transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none",
+        "disabled:pointer-events-none disabled:opacity-50",
+        _open ? "bg-accent/50" : "",
+        Class ?? ""
+    ).Trim();
+
+    private void OnHover()
+    {
+        _open = true;
+        Item?.Open(ContentFragment);
+    }
+}

@@ -1,0 +1,26 @@
+@* ScrollArea.razor — equivalente ao scroll-area.tsx (shadcn/ui) *@
+
+<div class="@CssClass" @attributes="AdditionalAttributes">
+    <div class="h-full w-full rounded-[inherit] overflow-auto" style="scrollbar-width: thin;">
+        @ChildContent
+    </div>
+</div>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string CssClass => string.Join(" ",
+        "relative overflow-hidden",
+        Class ?? ""
+    ).Trim();
+}
+
+@* 
+    Nota: O Blazor não tem um equivalente nativo ao ScrollAreaPrimitive do Radix UI.
+    Este componente usa o overflow-auto nativo do browser com scrollbar-width: thin.
+    Para uma scrollbar completamente customizada (como o Radix faz), seria necessário
+    JavaScript Interop via IJSRuntime.
+*@

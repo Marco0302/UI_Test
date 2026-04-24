@@ -1,0 +1,51 @@
+@* SidebarProvider.razor — equivalente ao SidebarProvider do sidebar.tsx *@
+
+<CascadingValue Value="_context">
+    <div style="--sidebar-width: 16rem; --sidebar-width-icon: 3rem; @Style"
+         class="@CssClass"
+         @attributes="AdditionalAttributes">
+        @ChildContent
+    </div>
+</CascadingValue>
+
+@code {
+    [Parameter] public bool DefaultOpen { get; set; } = true;
+    [Parameter] public bool? Open { get; set; }
+    [Parameter] public EventCallback<bool> OpenChanged { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public string? Style { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private SidebarContext _context = default!;
+    private bool _internalOpen;
+
+    protected override void OnInitialized()
+    {
+        _internalOpen = Open ?? DefaultOpen;
+        _context = new SidebarContext
+        {
+            GetOpen = () => Open ?? _internalOpen,
+            SetOpen = SetOpen,
+            ToggleSidebar = ToggleSidebar
+        };
+    }
+
+    private string CssClass => string.Join(" ",
+        "group/sidebar-wrapper flex min-h-svh w-full",
+        Class ?? ""
+    ).Trim();
+
+    private async Task SetOpen(bool value)
+    {
+        _internalOpen = value;
+        await OpenChanged.InvokeAsync(value);
+        StateHasChanged();
+    }
+
+    private async Task ToggleSidebar()
+    {
+        await SetOpen(!(Open ?? _internalOpen));
+    }
+}

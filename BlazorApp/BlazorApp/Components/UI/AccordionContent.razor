@@ -1,0 +1,15 @@
+@* AccordionContent *@
+@if (Item?.IsOpen == true)
+{
+    <div class="overflow-hidden text-sm transition-all @Class">
+        <div class="pb-4 pt-0">
+            @ChildContent
+        </div>
+    </div>
+}
+
+@code {
+    [CascadingParameter] public AccordionItem? Item { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string? Class { get; set; }
+}

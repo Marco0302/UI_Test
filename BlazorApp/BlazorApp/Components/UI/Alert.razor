@@ -1,0 +1,18 @@
+@* Alert *@
+<div role="alert" class="relative w-full rounded-lg border p-4 [&>svg~*]:pl-7 [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-foreground @VariantClass @Class">
+    @ChildContent
+</div>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public AlertVariant Variant { get; set; } = AlertVariant.Default;
+
+    private string VariantClass => Variant switch
+    {
+        AlertVariant.Destructive => "border-destructive/50 text-destructive dark:border-destructive [&>svg]:text-destructive",
+        _ => "bg-background text-foreground"
+    };
+
+    public enum AlertVariant { Default, Destructive }
+}

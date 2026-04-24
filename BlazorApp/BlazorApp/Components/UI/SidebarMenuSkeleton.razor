@@ -1,0 +1,31 @@
+@* SidebarMenuSkeleton.razor *@
+<div data-sidebar="menu-skeleton"
+     class="@CssClass"
+     @attributes="AdditionalAttributes">
+    @if (ShowIcon)
+    {
+        <Skeleton class="size-4 rounded-md" data-sidebar="menu-skeleton-icon" />
+    }
+    <Skeleton class="h-4 flex-1"
+              style=@($"max-width: {_width}")
+              data-sidebar="menu-skeleton-text" />
+</div>
+
+@code {
+    [Parameter] public bool ShowIcon { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string _width = "70%";
+
+    protected override void OnInitialized()
+    {
+        var pct = Random.Shared.Next(50, 91);
+        _width = $"{pct}%";
+    }
+
+    private string CssClass => string.Join(" ",
+        "flex h-8 items-center gap-2 rounded-md px-2",
+        Class ?? ""
+    ).Trim();
+}

@@ -1,0 +1,13 @@
+@* CollapsibleContent *@
+@if (Root?.Open == true)
+{
+    <div class="@Class">
+        @ChildContent
+    </div>
+}
+
+@code {
+    [CascadingParameter] public Collapsible? Root { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string? Class { get; set; }
+}

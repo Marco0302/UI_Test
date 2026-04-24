@@ -1,0 +1,49 @@
+@* Popover.razor — equivalente ao popover.tsx (shadcn/ui) *@
+
+<div class="relative inline-block @Class" @attributes="AdditionalAttributes">
+    <div @onclick="Toggle">
+        @Trigger
+    </div>
+
+    @if (_open)
+    {
+        <div class="@ContentClass" style="@ContentStyle">
+            @Content
+        </div>
+        @* Overlay invisível para fechar ao clicar fora *@
+        <div class="fixed inset-0 z-40" @onclick="Close"></div>
+    }
+</div>
+
+@code {
+    [Parameter] public RenderFragment? Trigger { get; set; }
+    [Parameter] public RenderFragment? Content { get; set; }
+    [Parameter] public string Align { get; set; } = "center";
+    [Parameter] public int SideOffset { get; set; } = 4;
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private bool _open;
+
+    private string ContentClass =>
+        "absolute z-50 w-72 rounded-md border bg-popover p-4 text-popover-foreground shadow-md outline-none " +
+        "animate-in fade-in-0 zoom-in-95";
+
+    private string ContentStyle
+    {
+        get
+        {
+            var align = Align switch
+            {
+                "start" => "left: 0;",
+                "end"   => "right: 0;",
+                _       => "left: 50%; transform: translateX(-50%);"
+            };
+            return $"top: calc(100% + {SideOffset}px); {align}";
+        }
+    }
+
+    private void Toggle() => _open = !_open;
+    private void Close() => _open = false;
+}

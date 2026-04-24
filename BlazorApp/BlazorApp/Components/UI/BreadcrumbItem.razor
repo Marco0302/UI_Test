@@ -1,0 +1,9 @@
+@* BreadcrumbItem *@
+<li class="inline-flex items-center gap-1.5 @Class">
+    @ChildContent
+</li>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string? Class { get; set; }
+}

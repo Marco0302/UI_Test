@@ -1,0 +1,14 @@
+@* AspectRatio *@
+<div style="position: relative; padding-bottom: @PaddingBottom; overflow: hidden;" class="@Class">
+    <div style="position: absolute; inset: 0;">
+        @ChildContent
+    </div>
+</div>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public double Ratio { get; set; } = 1;
+
+    private string PaddingBottom => $"{(1.0 / Ratio * 100):F4}%";
+}

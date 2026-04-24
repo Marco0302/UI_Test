@@ -1,0 +1,9 @@
+@* Card *@
+<div class="rounded-lg border bg-card text-card-foreground shadow-sm @Class">
+    @ChildContent
+</div>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string? Class { get; set; }
+}

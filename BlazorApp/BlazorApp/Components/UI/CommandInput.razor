@@ -1,0 +1,20 @@
+@* CommandInput *@
+<div class="flex items-center border-b px-3">
+    <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 h-4 w-4 shrink-0 opacity-50"
+         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+    </svg>
+    <input type="text"
+           value="@Root?.SearchValue"
+           @oninput="HandleInput"
+           placeholder="@Placeholder"
+           class="flex h-11 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 @Class" />
+</div>
+
+@code {
+    [CascadingParameter] public Command? Root { get; set; }
+    [Parameter] public string? Placeholder { get; set; }
+    [Parameter] public string? Class { get; set; }
+
+    private void HandleInput(ChangeEventArgs e) => Root?.UpdateSearch(e.Value?.ToString() ?? string.Empty);
+}

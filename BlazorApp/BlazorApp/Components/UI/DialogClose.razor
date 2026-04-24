@@ -1,0 +1,6 @@
+@* DialogClose *@
+<span @onclick="() => Root?.Hide()">@ChildContent</span>
+@code {
+    [CascadingParameter] public Dialog? Root { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

@@ -1,0 +1,17 @@
+@* NavigationMenuLink.razor *@
+<a href="@Href"
+   class="@CssClass"
+   @attributes="AdditionalAttributes">
+    @ChildContent
+</a>
+@code {
+    [Parameter] public string? Href { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+    private string CssClass => string.Join(" ",
+        "block select-none rounded-md p-3 leading-none no-underline outline-none transition-colors",
+        "hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+        Class ?? ""
+    ).Trim();
+}

@@ -1,0 +1,13 @@
+@* Dialog *@
+<CascadingValue Value="this">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public bool Open { get; set; }
+    [Parameter] public EventCallback<bool> OpenChanged { get; set; }
+
+    public async Task Show() { Open = true; await OpenChanged.InvokeAsync(true); }
+    public async Task Hide() { Open = false; await OpenChanged.InvokeAsync(false); }
+}

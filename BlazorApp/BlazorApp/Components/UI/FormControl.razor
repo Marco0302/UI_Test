@@ -1,0 +1,24 @@
+@* FormControl - wrapper para o campo de input, aplica aria correto *@
+<div id="@Item?.Id"
+     aria-describedby="@AriaDescribedBy"
+     aria-invalid="@(HasError ? "true" : "false")"
+     class="@Class">
+    @ChildContent
+</div>
+
+@code {
+    [CascadingParameter] public FormItem? Item { get; set; }
+    [CascadingParameter] public EditContext? EditContext { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public string? FieldName { get; set; }
+
+    private bool HasError =>
+        FieldName != null && EditContext != null &&
+        EditContext.GetValidationMessages(new FieldIdentifier(EditContext.Model, FieldName)).Any();
+
+    private string AriaDescribedBy =>
+        HasError
+            ? $"{Item?.DescriptionId} {Item?.MessageId}"
+            : Item?.DescriptionId ?? string.Empty;
+}

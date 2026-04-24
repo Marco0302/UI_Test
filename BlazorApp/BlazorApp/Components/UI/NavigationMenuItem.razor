@@ -1,0 +1,21 @@
+@* NavigationMenuItem.razor *@
+<li class="relative" @onmouseleave="OnMouseLeave">
+    <CascadingValue Value="this">
+        @ChildContent
+    </CascadingValue>
+</li>
+
+@code {
+    [CascadingParameter] public NavigationMenu? Menu { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    internal void Open(RenderFragment? content)
+    {
+        Menu?.ShowContent(content);
+    }
+
+    private void OnMouseLeave()
+    {
+        Menu?.HideContent();
+    }
+}

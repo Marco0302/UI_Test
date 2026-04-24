@@ -1,0 +1,7 @@
+@* DialogTrigger *@
+<span @onclick="() => Root?.Show()">@ChildContent</span>
+
+@code {
+    [CascadingParameter] public Dialog? Root { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

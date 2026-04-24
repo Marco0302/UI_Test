@@ -1,0 +1,14 @@
+@* Form - wrapper que fornece contexto de validação via EditContext *@
+<EditForm EditContext="EditContext" OnValidSubmit="OnValidSubmit" OnInvalidSubmit="OnInvalidSubmit" class="@Class">
+    <CascadingValue Value="EditContext">
+        @ChildContent
+    </CascadingValue>
+</EditForm>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter, EditorRequired] public EditContext EditContext { get; set; } = default!;
+    [Parameter] public EventCallback<EditContext> OnValidSubmit { get; set; }
+    [Parameter] public EventCallback<EditContext> OnInvalidSubmit { get; set; }
+}

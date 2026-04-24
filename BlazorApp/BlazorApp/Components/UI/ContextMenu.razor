@@ -1,0 +1,29 @@
+@* ContextMenu *@
+<div class="relative @Class" @oncontextmenu="HandleContextMenu" @oncontextmenu:preventDefault="true">
+    <CascadingValue Value="this">
+        @ChildContent
+    </CascadingValue>
+</div>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string? Class { get; set; }
+
+    public bool IsOpen { get; private set; }
+    public double X { get; private set; }
+    public double Y { get; private set; }
+
+    private void HandleContextMenu(MouseEventArgs e)
+    {
+        X = e.ClientX;
+        Y = e.ClientY;
+        IsOpen = true;
+        StateHasChanged();
+    }
+
+    public void Close()
+    {
+        IsOpen = false;
+        StateHasChanged();
+    }
+}

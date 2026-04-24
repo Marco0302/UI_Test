@@ -1,0 +1,19 @@
+@* Collapsible *@
+<div class="@Class">
+    <CascadingValue Value="this">
+        @ChildContent
+    </CascadingValue>
+</div>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public bool Open { get; set; }
+    [Parameter] public EventCallback<bool> OpenChanged { get; set; }
+
+    public async Task Toggle()
+    {
+        Open = !Open;
+        await OpenChanged.InvokeAsync(Open);
+    }
+}

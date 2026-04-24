@@ -1,0 +1,6 @@
+@* DrawerClose *@
+<span @onclick="() => Root?.Hide()">@ChildContent</span>
+@code {
+    [CascadingParameter] public Drawer? Root { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

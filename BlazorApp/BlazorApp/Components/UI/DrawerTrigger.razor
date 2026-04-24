@@ -1,0 +1,6 @@
+@* DrawerTrigger *@
+<span @onclick="() => Root?.Show()">@ChildContent</span>
+@code {
+    [CascadingParameter] public Drawer? Root { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

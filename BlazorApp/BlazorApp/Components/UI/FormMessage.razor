@@ -1,0 +1,31 @@
+@* FormMessage - mostra erros de validação *@
+@if (!string.IsNullOrEmpty(Message))
+{
+    <p id="@Item?.MessageId"
+       class="text-sm font-medium text-destructive @Class">
+        @Message
+    </p>
+}
+
+@code {
+    [CascadingParameter] public FormItem? Item { get; set; }
+    [CascadingParameter] public EditContext? EditContext { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public string? FieldName { get; set; }
+
+    private string? Message
+    {
+        get
+        {
+            if (FieldName != null && EditContext != null)
+            {
+                var msg = EditContext
+                    .GetValidationMessages(new FieldIdentifier(EditContext.Model, FieldName))
+                    .FirstOrDefault();
+                if (msg != null) return msg;
+            }
+            return null;
+        }
+    }
+}

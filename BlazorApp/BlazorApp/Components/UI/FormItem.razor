@@ -1,0 +1,16 @@
+@* FormItem - agrupa label + control + description + message *@
+<div class="space-y-2 @Class">
+    <CascadingValue Value="this">
+        @ChildContent
+    </CascadingValue>
+</div>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string? Class { get; set; }
+
+    // Unique id gerado por item para associar label ao controlo
+    public string Id { get; } = $"form-item-{Guid.NewGuid():N}";
+    public string DescriptionId => $"{Id}-description";
+    public string MessageId => $"{Id}-message";
+}

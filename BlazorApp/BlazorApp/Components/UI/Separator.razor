@@ -1,0 +1,21 @@
+@* Separator.razor — equivalente ao separator.tsx (shadcn/ui) *@
+
+<div role="@(Decorative ? "none" : "separator")"
+     aria-orientation="@Orientation"
+     class="@CssClass"
+     @attributes="AdditionalAttributes">
+</div>
+
+@code {
+    [Parameter] public string Orientation { get; set; } = "horizontal"; // "horizontal" | "vertical"
+    [Parameter] public bool Decorative { get; set; } = true;
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string CssClass => string.Join(" ",
+        "shrink-0 bg-border",
+        Orientation == "horizontal" ? "h-[1px] w-full" : "h-full w-[1px]",
+        Class ?? ""
+    ).Trim();
+}

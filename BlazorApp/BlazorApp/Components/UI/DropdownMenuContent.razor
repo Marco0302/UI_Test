@@ -1,0 +1,25 @@
+@* DropdownMenuContent *@
+@if (Root?.IsOpen == true)
+{
+    <div class="fixed inset-0 z-40" @onclick="() => Root?.Close()"></div>
+    <div class="absolute z-50 min-w-[8rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md @SideClass @Class">
+        @ChildContent
+    </div>
+}
+
+@code {
+    [CascadingParameter] public DropdownMenu? Root { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public DropdownSide Side { get; set; } = DropdownSide.Bottom;
+
+    private string SideClass => Side switch
+    {
+        DropdownSide.Top    => "bottom-full mb-1",
+        DropdownSide.Left   => "right-full mr-1",
+        DropdownSide.Right  => "left-full ml-1",
+        _                   => "top-full mt-1"
+    };
+
+    public enum DropdownSide { Top, Bottom, Left, Right }
+}

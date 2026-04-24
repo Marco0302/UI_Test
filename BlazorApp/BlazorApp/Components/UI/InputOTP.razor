@@ -1,0 +1,35 @@
+@* InputOTP.razor — equivalente ao input-otp.tsx (shadcn/ui) *@
+@* Implementação nativa em Blazor sem dependência da lib input-otp *@
+
+<div class="flex items-center gap-2 @(Disabled ? "opacity-50" : "") @Class"
+     @attributes="AdditionalAttributes">
+    <CascadingValue Value="this">
+        @ChildContent
+    </CascadingValue>
+</div>
+
+@code {
+    [Parameter] public int MaxLength { get; set; } = 6;
+    [Parameter] public string? Value { get; set; }
+    [Parameter] public EventCallback<string?> ValueChanged { get; set; }
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    internal char? GetChar(int index)
+    {
+        if (Value is not null && index < Value.Length)
+            return Value[index];
+        return null;
+    }
+
+    internal bool IsActive(int index) => (Value?.Length ?? 0) == index;
+
+    internal async Task HandleInput(string? newValue)
+    {
+        Value = newValue;
+        await ValueChanged.InvokeAsync(Value);
+    }
+}

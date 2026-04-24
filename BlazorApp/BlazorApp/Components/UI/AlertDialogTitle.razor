@@ -1,0 +1,6 @@
+@* AlertDialogTitle *@
+<h2 class="text-lg font-semibold @Class">@ChildContent</h2>
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string? Class { get; set; }
+}
